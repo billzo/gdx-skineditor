@@ -41,21 +41,26 @@ public class SystemFonts {
 	 * 
 	 */
 	public SystemFonts() {
+		
+
 	
 		String osName = System.getProperty("os.name");
 		if (osName.equals("Linux")) {
 			
 			fontPaths.add("/usr/share/fonts/");
 			fontPaths.add("~/.fonts/");
+			fontPaths.add("resources/fonts/");
 			
 		} else if (osName.contains("Windows")) { 
 			
 			fontPaths.add("c:\\Windows\\Fonts\\");
+			fontPaths.add("resources\\fonts\\");
 			
 		} else { // Mac OS X
 			
 			fontPaths.add("/Network/Library/Fonts/");
 			fontPaths.add("~/Library/Fonts/");
+			fontPaths.add("resources/fonts/");
 		}
 		
 	}
@@ -64,12 +69,12 @@ public class SystemFonts {
 	 * Perform a search for fonts in the OS folders
 	 */
 	private void searchForFonts(String fontPath) {
-		
 		File[] files = new File(fontPath).listFiles();
 		if (files == null) {
 			return;
 		}
 		for(File file : files) {
+			System.out.println(file.getAbsolutePath());
 			if (file.isDirectory() == true) {
 				searchForFonts(file.getAbsolutePath());
 			} else {

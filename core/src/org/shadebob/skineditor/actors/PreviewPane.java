@@ -269,7 +269,9 @@ public class PreviewPane extends Table {
 				}
 
 			}
-
+			
+			//setDebug(true, true);
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

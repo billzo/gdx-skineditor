@@ -11,18 +11,14 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
-import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.tools.texturepacker.TexturePacker;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
-import com.badlogic.gdx.utils.viewport.ExtendViewport;
-import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 public class MainScreen implements Screen {
@@ -34,6 +30,8 @@ public class MainScreen implements Screen {
 	public OptionsPane paneOptions;
 	public Stage stage;
 	private String currentProject = "";
+	
+	private ShapeRenderer shapeRenderer;
 	
 	public MainScreen(SkinEditorGame game) {
 		this.game = game;
@@ -49,13 +47,12 @@ public class MainScreen implements Screen {
 		
 		table.top().left().add(barMenu).expandX().fillX().colspan(2).row();
 		table.top().left().add(barWidgets).expandX().fillX().colspan(2).row();
-		table.top().left().add(paneOptions).width(420).left().fill().expandY();
-		ScrollPane scrollPane = new ScrollPane(panePreview);
-		table.add(scrollPane).fill().expand();
+		table.top().left().add(paneOptions).width(500).left().fill().expand();
+		table.top().left().add(panePreview).width(600).left().fill().expand();
 		stage.addActor(table);
 		barWidgets.initializeButtons();
 		
-
+		shapeRenderer = new ShapeRenderer();
 		
 	}
 	
@@ -66,6 +63,9 @@ public class MainScreen implements Screen {
 
 		stage.act(delta);
 		stage.draw();	
+		
+		shapeRenderer.begin(ShapeType.Line);
+		shapeRenderer.end();
 		
 	}
 	

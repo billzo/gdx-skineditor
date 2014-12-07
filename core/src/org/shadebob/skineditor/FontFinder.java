@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright 2011 See AUTHORS file.
+ * Copyright 2014 See AUTHORS file.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,23 +16,17 @@
 package org.shadebob.skineditor;
 
 import java.io.File;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.TreeSet;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Array;
 
 /**
- * Ok here's the deal.
- * 
- * Handling fonts from JAVA mostly sucks when you want to get proper file path.
- * I also only want to list TTF fonts.
- * 
+ * To use: please put fonts into the a folder called "fonts" in the resource folder
  * @author Yanick Bourbeau
- *
+ * @author billzo
  */
-public class SystemFonts {
+public class FontFinder {
 
 	private Array<String> fontPaths = new Array<String>();
 	public HashMap<String, File> fonts = new HashMap<String, File>();
@@ -40,9 +34,7 @@ public class SystemFonts {
 	/**
 	 * 
 	 */
-	public SystemFonts() {
-		
-
+	public FontFinder() {
 	
 		String osName = System.getProperty("os.name");
 		if (osName.equals("Linux")) {
@@ -56,17 +48,18 @@ public class SystemFonts {
 			fontPaths.add("c:\\Windows\\Fonts\\");
 			fontPaths.add("resources\\fonts\\");
 			
-		} else { // Mac OS X
-			
+		} else if (osName.contains("Mac")) {
+
 			fontPaths.add("/Network/Library/Fonts/");
 			fontPaths.add("~/Library/Fonts/");
 			fontPaths.add("resources/fonts/");
+			
 		}
 		
 	}
 	
 	/**
-	 * Perform a search for fonts in the OS folders
+	 * Perform a search for fonts in the default folders
 	 */
 	private void searchForFonts(String fontPath) {
 		File[] files = new File(fontPath).listFiles();

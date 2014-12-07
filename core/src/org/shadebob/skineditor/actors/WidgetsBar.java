@@ -16,10 +16,15 @@
 package org.shadebob.skineditor.actors;
 
 import org.shadebob.skineditor.SkinEditorGame;
+
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.ButtonGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton.ImageButtonStyle;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.mobidevelop.maps.editor.ui.utils.Tooltips;
@@ -29,12 +34,14 @@ import com.mobidevelop.maps.editor.ui.utils.Tooltips;
  * A table representing the buttons panel at the top
  * 
  * @author Yanick Bourbeau
- *
+ * @author Billzo Aiken
  */
 public class WidgetsBar extends Table {
 
 	private SkinEditorGame game;
+	private Table table;
 	public ButtonGroup group;
+	public Label[] labels;
 
 	/**
 	 * 
@@ -45,6 +52,7 @@ public class WidgetsBar extends Table {
 
 		left();
 		setBackground(game.skin.getDrawable("default-pane"));
+		table = new Table(game.skin);
 
 	}
 
@@ -58,6 +66,19 @@ public class WidgetsBar extends Table {
 		Tooltips.TooltipStyle styleTooltip = new Tooltips.TooltipStyle(game.skin.getFont("default-font"), game.skin.getDrawable("default-round"), game.skin.getColor("white"));		
 
 		String[] widgets = SkinEditorGame.widgets;
+		
+		labels = new Label[widgets.length];
+		Skin labelSkin = new Skin(Gdx.files.local("resources/uiskin.json"));
+		labelSkin.getFont("default-font").setScale(0.90f);
+		//TODO: Repack font size
+		
+		for (String widget : widgets) {
+			
+			Label label = new Label(widget.toString(), labelSkin);
+			table.add(label).center();
+			
+		}
+		table.row();
 		for (String widget : widgets) {
 
 			ImageButtonStyle style = new ImageButtonStyle();
@@ -67,6 +88,7 @@ public class WidgetsBar extends Table {
 			style.imageUp = game.skin.getDrawable("widgets/" + widget);
 			ImageButton button = new ImageButton(style);
 			button.setUserObject(widget);
+			button.setScale(0.90f);
 
 			Tooltips tooltip = new Tooltips(styleTooltip, getStage());
 			tooltip.registerTooltip(button, (String) button.getUserObject()); 
@@ -81,13 +103,24 @@ public class WidgetsBar extends Table {
 				}
 
 			});
-
 			group.add(button);
-			add(button).pad(5);
+			
+			table.add(button).padRight(15).padLeft(15).padBottom(15).center();
+			
+			
+			
+
 		}
-		
-		
+
+		ScrollPane scroll = new ScrollPane(table, game.skin);
+		scroll.setFadeScrollBars(false);
+		scroll.setScrollingDisabled(false, true);
+		add(scroll).left().width(table.getWidth() + Gdx.graphics.getWidth()).height(100).expandX().fillX().row();
+		//TODO: Fix the spacing of widgetsbar after full-screen?
+		//setDebug(true, true);
+	
 	}
+	
 
 	/**
 	 * 

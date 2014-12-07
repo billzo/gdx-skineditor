@@ -50,7 +50,7 @@ public class SkinEditorGame extends Game {
 	public Skin skinProject;
 	
 	// System fonts
-	public SystemFonts fm;
+	public FontFinder fm;
 	
 	// Optional check
 	public OptionalChecker opt;
@@ -60,7 +60,7 @@ public class SkinEditorGame extends Game {
 		
 		opt = new OptionalChecker();
 		
-		fm = new SystemFonts();
+		fm = new FontFinder();
 		fm.refreshFonts();
 		
 		// Create projects folder if not already here

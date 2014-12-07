@@ -31,17 +31,13 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
-import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.ObjectMap;
@@ -71,11 +67,28 @@ public class DrawablePickerDialog extends Dialog {
 
 		tableDrawables = new Table(game.skin);
 		scrollPane = new ScrollPane(tableDrawables, game.skin);
-		getContentTable().add(scrollPane);
 		scrollPane.setFlickScroll(false);
 		scrollPane.setFadeScrollBars(false);
 		scrollPane.setScrollbarsOnTop(true);
+		
 
+		getContentTable().add(scrollPane).width(960).height(640).pad(20);
+		key(com.badlogic.gdx.Input.Keys.ESCAPE, false);
+
+	}
+
+	@Override
+	public Dialog show(Stage stage) {
+
+		refresh();
+		
+		Dialog d = super.show(stage);
+		getStage().setScrollFocus(scrollPane);
+		return d;
+		
+	}
+
+	private void addSpecialButtons() {
 		TextButton buttonNewNinePatch = new TextButton("Create NinePatch", game.skin);
 		buttonNewNinePatch.addListener(new ChangeListener() {
 
@@ -206,28 +219,27 @@ public class DrawablePickerDialog extends Dialog {
 			}
 
 		});
+		
+		TextButton buttonCancel = new TextButton("Cancel", game.skin);
+		buttonCancel.addListener(new ChangeListener() {
 
-		getContentTable().add(scrollPane).width(960).height(640).pad(20);
-		getButtonTable().add(buttonNewNinePatch);
-		getButtonTable().add(buttonNewDrawable);
-		getButtonTable().add(buttonZoom);
-		if (field != null) {
-			getButtonTable().add(buttonNoDrawable);
+			@Override
+			public void changed(ChangeEvent event, Actor actor) {
+				cancel();
+				hide();
+			}
+
+		});
+		
+		tableDrawables.add(buttonNewNinePatch);
+		tableDrawables.add(buttonNewDrawable);
+		tableDrawables.add(buttonZoom);
+		if (field == null) {
+			buttonNoDrawable.setDisabled(true);
 		}
-		getButtonTable().padBottom(15);
-		button("Cancel", false);
-		key(com.badlogic.gdx.Input.Keys.ESCAPE, false);
-
-	}
-
-	@Override
-	public Dialog show(Stage stage) {
-
-		refresh();
-
-		Dialog d = super.show(stage);
-		getStage().setScrollFocus(scrollPane);
-		return d;
+		tableDrawables.add(buttonNoDrawable);
+		tableDrawables.add(buttonCancel).pad(5).row();
+		
 	}
 
 	private void refresh() {
@@ -262,6 +274,7 @@ public class DrawablePickerDialog extends Dialog {
 	public void updateTable() {
 
 		tableDrawables.clear();
+		addSpecialButtons();
 
 		Iterator<String> keys = items.keys().iterator();
 		int count = 0;

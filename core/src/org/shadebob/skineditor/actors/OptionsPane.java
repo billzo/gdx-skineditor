@@ -76,6 +76,8 @@ public class OptionsPane extends Table {
 		left();
 		top();
 		setBackground(game.skin.getDrawable("default-pane"));
+		
+		setDebug(true, true);
 
 		add(new Label("Styles", game.skin, "title")).pad(5).row();
 		listStyles = new List<String>(game.skin, "dimmed");
@@ -86,7 +88,7 @@ public class OptionsPane extends Table {
 		scroll.setScrollbarsOnTop(true);
 		scroll.setScrollBarPositions(false, true);
 		scroll.setScrollingDisabled(true, false);
-		add(scroll).height(200).expandX().fillX().pad(5).row();
+		add(scroll).height(200).expandX().fillX().row();
 
 		// Add buttons
 		Table tableStylesButtons = new Table();

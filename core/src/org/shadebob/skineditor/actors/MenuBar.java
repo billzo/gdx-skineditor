@@ -42,7 +42,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
  * A table representing the menu bar at the top of the interface
  * 
  * @author Yanick Bourbeau
- *
+ * @author Billzo Aiken
  */
 public class MenuBar extends Table {
 
@@ -152,8 +152,9 @@ public class MenuBar extends Table {
 		
 		
 		Label labelCurrentProject = new Label("Current Project:", game.skin,"title");
-		add(labelCurrentProject).pad(5).padRight(20);
-
+		add(labelCurrentProject).pad(5).expandX().left();
+		//TODO: Fix justification of words "current project"
+		
 		labelProjectName = new Label("---", game.skin);
 		add(labelProjectName).pad(5).padRight(20);
 	}
